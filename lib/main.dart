@@ -1,3 +1,6 @@
+import 'package:ejfirebase/delete.dart';
+import 'package:ejfirebase/read.dart';
+import 'package:ejfirebase/update.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -24,10 +27,47 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Scaffold(
-        body: AddHelado(),
+      home: Scaffold(
+        body: Column(
+          children: [
+            const AddHelado(),
+            const UpdateHelado(),
+            const DeleteHelado(),
+            const SizedBox(
+              height: 10,
+            ),
+            GetHelado('WArRbDFWSe2piySdvKlc'),
+            const SizedBox(
+              height: 10,
+            ),
+            SizedBox(height: 400, child: GetHelados()),
+          ],
+        ),
       ),
     );
+  }
+}
+
+class UpdateHelado extends StatelessWidget {
+  const UpdateHelado({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () => updateHelado('56U4bmUWOVsKX3cTvdeQ',
+            'ChocoFresa con avellana', 'Q.10', 'Pequeño'),
+        child: const Text('Actualizar'));
+  }
+}
+
+class DeleteHelado extends StatelessWidget {
+  const DeleteHelado({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () => deleteHelados('56U4bmUWOVsKX3cTvdeQ'),
+        child: const Text('Eliminar'));
   }
 }
 
@@ -39,7 +79,7 @@ class AddHelado extends StatelessWidget {
   Widget build(BuildContext context) {
     // Declaración referencia
     CollectionReference helados =
-        FirebaseFirestore.instance.collection('helados');
+        FirebaseFirestore.instance.collection('icecream');
 
 // Función
     Future<void> addHelado(String nombre, String precio, String tamano) {
@@ -50,7 +90,7 @@ class AddHelado extends StatelessWidget {
               context: context,
               builder: (BuildContext context) => AlertDialog(
                 title: const Text('Helado añadido'),
-                content: Text('El helado de $nombre ha sido añadido'),
+                content: Text('El helado $nombre ha sido añadido'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.pop(context, 'OK'),
